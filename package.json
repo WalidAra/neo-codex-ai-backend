@@ -18,6 +18,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@prisma/client": "^6.2.1",
+    "@types/swagger-ui-express": "^4.1.7",
+    "@types/yamljs": "^0.2.34",
     "bcrypt": "^5.1.1",
     "chalk": "^4.1.2",
     "cookie-parser": "^1.4.7",
