@@ -17,7 +17,7 @@ export class User implements Entity {
   }
 
   getData: () => UserDTO = () => {
-    const { password, updatedAt, ...data } = this.user;
+    const { password, updatedAt, provider, ...data } = this.user;
     return data;
   };
 }

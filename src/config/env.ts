@@ -7,12 +7,12 @@ const envConfig = {
   nodeEnv: process.env.NODE_ENV || "development",
   jwtSecret: process.env.JWT_SECRET as string,
 
-  // googleClientId: process.env.GOOGLE_CLIENT_ID,
-  // googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  // googleCallbackUrl: process.env.GOOGLE_REDIRECT_URIS,
-  // googleAuthUri: process.env.GOOGLE_AUTH_URI,
-  // googleTokenUri: process.env.GOOGLE_TOKEN_URI,
-  // googleJavascriptOrigins: process.env.GOOGLE_JAVASCRIPT_ORIGINS,
+  googleClientId: process.env.GOOGLE_CLIENT_ID,
+  googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  googleCallbackUrl: process.env.GOOGLE_REDIRECT_URIS,
+  googleAuthUri: process.env.GOOGLE_AUTH_URI,
+  googleTokenUri: process.env.GOOGLE_TOKEN_URI,
+  googleJavascriptOrigins: process.env.GOOGLE_JAVASCRIPT_ORIGINS,
 
   // redisUrl: process.env.REDIS_URL,
 

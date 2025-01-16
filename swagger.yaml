@@ -7,3 +7,227 @@ servers:
   - url: http://localhost:1611
     description: Local server
 paths:
+  /api/public/auth/signup:
+    post:
+      summary: User signup
+      description: Endpoint for user registration.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                username:
+                  type: string
+                recall:
+                  type: boolean
+                  description: Flag to indicate if the user wants auto authentication.
+              required:
+                - email
+                - password
+                - username
+            example:
+              email: "user@example.com"
+              password: "StrongPassword123"
+              username: "new_user"
+              recall: true
+      responses:
+        "200":
+          description: Successful signup
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  userId:
+                    type: string
+                example:
+                  message: "Signup successful"
+                  userId: "cm5zrph4t0000rxqh3ao36ujr"
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error
+
+  /api/public/auth/signin:
+    post:
+      summary: User signin
+      description: Endpoint for user login.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+                recall:
+                  type: boolean
+                  description: Flag to indicate if the user wants auto authentication.
+              required:
+                - email
+                - password
+            example:
+              email: "user@example.com"
+              password: "StrongPassword123"
+              recall: false
+      responses:
+        "200":
+          description: Successful signin
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      email:
+                        type: string
+                      name:
+                        type: string
+                      image:
+                        type: string
+                        nullable: true
+                      createdAt:
+                        type: string
+                        format: date-time
+                      accessToken:
+                        type: string
+                    example:
+                      message: "User signed in successfully"
+                      data:
+                        id: "cm5zrph4t0000rxqh3ao36ujr"
+                        email: "walidara.010@gmail.com"
+                        name: "WalidAra"
+                        image: null
+                        createdAt: "2025-01-16T20:12:56.189Z"
+                        accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtNXpycGg0dDAwMDByeHFoM2FvMzZ1anIiLCJyZWNhbGwiOnRydWUsImlhdCI6MTczNzA2MDQ1NiwiZXhwIjoxNzM3MTQ2ODU2fQ.Qctvafk4BZZBz-mrHGR84o_NNCN5uubnJodb8HddJvc"
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+
+  /api/public/auth/signout:
+    post:
+      summary: User signout
+      description: Endpoint to log out the user.
+      responses:
+        "200":
+          description: Successful signout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Signout successful"
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+
+  /api/public/auth/refresh:
+    get:
+      summary: Refresh authentication token
+      description: Endpoint to refresh the access token.
+      responses:
+        "200":
+          description: Token refreshed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                example:
+                  accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+
+  /api/public/auth/google:
+    get:
+      summary: Google authentication
+      description: Redirects the user to the Google OAuth page.
+      responses:
+        "302":
+          description: Redirect to Google authentication
+
+  /api/public/auth/google/callback:
+    get:
+      summary: Google authentication callback
+      description: Handles the callback from Google after authentication.
+      responses:
+        "200":
+          description: Google authentication successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  refreshToken:
+                    type: string
+                example:
+                  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                  refreshToken: "dGhpcyBpcyBhIHJlZnJlc2ggdG9rZW4"
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+        username:
+          type: string
+      example:
+        id: "123456"
+        email: "user@example.com"
+        username: "new_user"
+    AuthTokens:
+      type: object
+      properties:
+        token:
+          type: string
+        refreshToken:
+          type: string
+      example:
+        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+        refreshToken: "dGhpcyBpcyBhIHJlZnJlc2ggdG9rZW4"
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -8,7 +8,7 @@ export const TryCatchBlock = (fn: RequestHandler): RequestHandler => {
     try {
       await fn(req, res, next);
     } catch (error: unknown) {
-      console.log(chalk.red(`Error: ${error}`));
+      console.log(chalk.red(`~> Error ${error}`));
       if (error instanceof ConstraintError) {
         return res.status(error.status).json({ message: error.message });
       } else if (error instanceof TokenExpiredError) {

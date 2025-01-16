@@ -1,13 +1,14 @@
 import { AuthController } from "@/core/interfaces/controllers";
 import { Router } from "express";
+import { googleAuthScope, googleAuthSession } from "@/middlewares";
 const router = Router();
 
-const { google, refresh, signin, signup, signout } = AuthController;
-router.get("/refresh", refresh);
-// router.post("/signin", signin);
-// router.post("/signup", signup);
+const { refresh, signin, signup, signout, googleAuth } = AuthController;
+router.post("/signup", signup);
+router.post("/signin", signin);
 router.post("/signout", signout);
-// router.get("/google", google);
-// router.get("/google/callback", () => {});
+router.get("/refresh", refresh);
+router.get("/google", googleAuthScope);
+router.get("/google/callback", googleAuthSession, googleAuth);
 
 export default router;
