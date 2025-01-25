@@ -8,6 +8,8 @@ servers:
     description: Local server
 paths:
   /api/public/auth/signup:
+    x-tags:
+      - Authentication
     post:
       summary: User signup
       description: Endpoint for user registration.
@@ -59,6 +61,8 @@ paths:
           description: Internal server error
 
   /api/public/auth/signin:
+    x-tags:
+      - Authentication
     post:
       summary: User signin
       description: Endpoint for user login.
@@ -127,6 +131,8 @@ paths:
           description: Internal server error
 
   /api/public/auth/signout:
+    x-tags:
+      - Authentication
     post:
       summary: User signout
       description: Endpoint to log out the user.
@@ -148,6 +154,8 @@ paths:
           description: Internal server error
 
   /api/public/auth/refresh:
+    x-tags:
+      - Authentication
     get:
       summary: Refresh authentication token
       description: Endpoint to refresh the access token.
@@ -169,6 +177,8 @@ paths:
           description: Internal server error
 
   /api/public/auth/google:
+    x-tags:
+      - Authentication
     get:
       summary: Google authentication
       description: Redirects the user to the Google OAuth page.
@@ -177,6 +187,8 @@ paths:
           description: Redirect to Google authentication
 
   /api/public/auth/google/callback:
+    x-tags:
+      - Authentication
     get:
       summary: Google authentication callback
       description: Handles the callback from Google after authentication.
@@ -200,74 +212,66 @@ paths:
         "500":
           description: Internal server error
 
+  /api/private/user:
+    x-tags:
+      - User
+    get:
+      summary: Get user profile
+      description: Endpoint to retrieve the user's profile information.
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Successful profile retrieval
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+                  username:
+                    type: string
+                example:
+                  id: "123456"
+                  email: "user@example.com"
+                  username: "new_user"
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+
+  /api/private/user/signout:
+    x-tags:
+      - User
+    get:
+      summary: User signout
+      description: Endpoint to log out the user.
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Successful signout
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                example:
+                  message: "Signout successful"
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+
 components:
-  schemas:
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-          format: email
-        username:
-          type: string
-      example:
-        id: "123456"
-        email: "user@example.com"
-        username: "new_user"
-    AuthTokens:
-      type: object
-      properties:
-        token:
-          type: string
-        refreshToken:
-          type: string
-      example:
-        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-        refreshToken: "dGhpcyBpcyBhIHJlZnJlc2ggdG9rZW4"
   securitySchemes:
     BearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      /api/private/user:
-        get:
-          summary: Get user profile
-          description: Endpoint to retrieve the user's profile information.
-          security:
-            - BearerAuth: []
-          responses:
-            "200":
-              description: Successful profile retrieval
-              content:
-                application/json:
-                  schema:
-                    $ref: '#/components/schemas/User'
-            "401":
-              description: Unauthorized
-            "500":
-              description: Internal server error
-
-      /api/private/user/signout:
-        get:
-          summary: User signout
-          description: Endpoint to log out the user.
-          security:
-            - BearerAuth: []
-          responses:
-            "200":
-              description: Successful signout
-              content:
-                application/json:
-                  schema:
-                    type: object
-                    properties:
-                      message:
-                        type: string
-                    example:
-                      message: "Signout successful"
-            "401":
-              description: Unauthorized
-            "500":
-              description: Internal server error
