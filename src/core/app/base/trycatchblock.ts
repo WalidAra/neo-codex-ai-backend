@@ -2,6 +2,7 @@ import { TokenExpiredError } from "jsonwebtoken";
 import { ConstraintError } from "./ConstraintError";
 import { Request, RequestHandler, Response, NextFunction } from "express";
 import chalk from "chalk";
+import { envConfig } from "@/config";
 
 export const TryCatchBlock = (fn: RequestHandler): RequestHandler => {
   return (async (req: Request, res: Response, next: NextFunction) => {
@@ -12,7 +13,7 @@ export const TryCatchBlock = (fn: RequestHandler): RequestHandler => {
       if (error instanceof ConstraintError) {
         return res.status(error.status).json({ message: error.message });
       } else if (error instanceof TokenExpiredError) {
-        res.clearCookie("refreshToken", {
+        res.clearCookie(envConfig.refreshName, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
