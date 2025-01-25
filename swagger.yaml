@@ -231,3 +231,43 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+      /api/private/user:
+        get:
+          summary: Get user profile
+          description: Endpoint to retrieve the user's profile information.
+          security:
+            - BearerAuth: []
+          responses:
+            "200":
+              description: Successful profile retrieval
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/User'
+            "401":
+              description: Unauthorized
+            "500":
+              description: Internal server error
+
+      /api/private/user/signout:
+        get:
+          summary: User signout
+          description: Endpoint to log out the user.
+          security:
+            - BearerAuth: []
+          responses:
+            "200":
+              description: Successful signout
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                    example:
+                      message: "Signout successful"
+            "401":
+              description: Unauthorized
+            "500":
+              description: Internal server error
