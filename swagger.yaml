@@ -1,18 +1,15 @@
-openapi: 3.0.0
+openapi: 3.0.3
 info:
-  title: Neo Codex AI API
-  description: This is the API documentation for the Neo Codex AI backend.
+  title: Authentication & User APIs
+  description: APIs for handling user authentication and user-related actions.
   version: 1.0.0
-servers:
-  - url: http://localhost:1611
-    description: Local server
 paths:
   /api/public/auth/signup:
-    x-tags:
-      - Authentication
     post:
+      tags:
+        - Authentication
       summary: User signup
-      description: Endpoint for user registration.
+      description: Create a new user account.
       requestBody:
         required: true
         content:
@@ -23,26 +20,28 @@ paths:
                 email:
                   type: string
                   format: email
+                  description: User's email address.
+                  example: user@example.com
                 password:
                   type: string
                   format: password
-                username:
+                  description: User's password.
+                  example: mySecurePassword123
+                name:
                   type: string
+                  description: User's full name.
+                  example: John Doe
                 recall:
                   type: boolean
-                  description: Flag to indicate if the user wants auto authentication.
+                  description: Remember the user for auto signin.
+                  example: true
               required:
                 - email
                 - password
-                - username
-            example:
-              email: "user@example.com"
-              password: "StrongPassword123"
-              username: "new_user"
-              recall: true
+                - name
       responses:
-        "200":
-          description: Successful signup
+        '201':
+          description: User created successfully.
           content:
             application/json:
               schema:
@@ -50,95 +49,67 @@ paths:
                 properties:
                   message:
                     type: string
-                  userId:
-                    type: string
-                example:
-                  message: "Signup successful"
-                  userId: "cm5zrph4t0000rxqh3ao36ujr"
-        "400":
-          description: Invalid request
-        "500":
-          description: Internal server error
-
-  /api/public/auth/signin:
-    x-tags:
-      - Authentication
-    post:
-      summary: User signin
-      description: Endpoint for user login.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  format: email
-                password:
-                  type: string
-                  format: password
-                recall:
-                  type: boolean
-                  description: Flag to indicate if the user wants auto authentication.
-              required:
-                - email
-                - password
-            example:
-              email: "user@example.com"
-              password: "StrongPassword123"
-              recall: false
-      responses:
-        "200":
-          description: Successful signin
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
+                    example: User signed up successfully
                   data:
                     type: object
                     properties:
                       id:
                         type: string
+                        description: Unique user ID.
+                        example: cm6c6pwmr0000rx3rbtzyohvx
                       email:
                         type: string
+                        format: email
+                        example: user@example.com
                       name:
                         type: string
+                        example: John Doe
                       image:
                         type: string
                         nullable: true
+                        example: null
                       createdAt:
                         type: string
                         format: date-time
+                        example: 2025-01-25T12:46:24.627Z
                       accessToken:
                         type: string
-                    example:
-                      message: "User signed in successfully"
-                      data:
-                        id: "cm5zrph4t0000rxqh3ao36ujr"
-                        email: "walidara.010@gmail.com"
-                        name: "WalidAra"
-                        image: null
-                        createdAt: "2025-01-16T20:12:56.189Z"
-                        accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNtNXpycGg0dDAwMDByeHFoM2FvMzZ1anIiLCJyZWNhbGwiOnRydWUsImlhdCI6MTczNzA2MDQ1NiwiZXhwIjoxNzM3MTQ2ODU2fQ.Qctvafk4BZZBz-mrHGR84o_NNCN5uubnJodb8HddJvc"
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal server error
+                        description: JWT access token.
+                        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
-  /api/public/auth/signout:
-    x-tags:
-      - Authentication
+  /api/public/auth/signin:
     post:
-      summary: User signout
-      description: Endpoint to log out the user.
+      tags:
+        - Authentication
+      summary: User signin
+      description: Authenticate a user with their email and password.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: User's email address.
+                  example: user@example.com
+                password:
+                  type: string
+                  format: password
+                  description: User's password.
+                  example: mySecurePassword123
+                recall:
+                  type: boolean
+                  description: Remember the user for auto signin.
+                  example: true
+              required:
+                - email
+                - password
       responses:
-        "200":
-          description: Successful signout
+        '200':
+          description: User authenticated successfully.
           content:
             application/json:
               schema:
@@ -146,115 +117,43 @@ paths:
                 properties:
                   message:
                     type: string
-                example:
-                  message: "Signout successful"
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal server error
+                    example: User signed in successfully
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: Unique user ID.
+                        example: cm6c6pwmr0000rx3rbtzyohvx
+                      email:
+                        type: string
+                        format: email
+                        example: user@example.com
+                      name:
+                        type: string
+                        example: John Doe
+                      image:
+                        type: string
+                        nullable: true
+                        example: null
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: 2025-01-25T12:46:24.627Z
+                      accessToken:
+                        type: string
+                        description: JWT access token.
+                        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
   /api/public/auth/refresh:
-    x-tags:
-      - Authentication
     get:
-      summary: Refresh authentication token
-      description: Endpoint to refresh the access token.
+      tags:
+        - Authentication
+      summary: Refresh tokens
+      description: Refresh the user's authentication tokens.
       responses:
-        "200":
-          description: Token refreshed
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  token:
-                    type: string
-                example:
-                  accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal server error
-
-  /api/public/auth/google:
-    x-tags:
-      - Authentication
-    get:
-      summary: Google authentication
-      description: Redirects the user to the Google OAuth page.
-      responses:
-        "302":
-          description: Redirect to Google authentication
-
-  /api/public/auth/google/callback:
-    x-tags:
-      - Authentication
-    get:
-      summary: Google authentication callback
-      description: Handles the callback from Google after authentication.
-      responses:
-        "200":
-          description: Google authentication successful
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  token:
-                    type: string
-                  refreshToken:
-                    type: string
-                example:
-                  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-                  refreshToken: "dGhpcyBpcyBhIHJlZnJlc2ggdG9rZW4"
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal server error
-
-  /api/private/user:
-    x-tags:
-      - User
-    get:
-      summary: Get user profile
-      description: Endpoint to retrieve the user's profile information.
-      security:
-        - BearerAuth: []
-      responses:
-        "200":
-          description: Successful profile retrieval
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  email:
-                    type: string
-                    format: email
-                  username:
-                    type: string
-                example:
-                  id: "123456"
-                  email: "user@example.com"
-                  username: "new_user"
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal server error
-
-  /api/private/user/signout:
-    x-tags:
-      - User
-    get:
-      summary: User signout
-      description: Endpoint to log out the user.
-      security:
-        - BearerAuth: []
-      responses:
-        "200":
-          description: Successful signout
+        '200':
+          description: Tokens refreshed successfully.
           content:
             application/json:
               schema:
@@ -262,16 +161,105 @@ paths:
                 properties:
                   message:
                     type: string
-                example:
-                  message: "Signout successful"
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal server error
+                    example: Tokens refreshed successfully
+                  data:
+                    type: object
+                    properties:
+                      accessToken:
+                        type: string
+                        description: JWT access token.
+                        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
-components:
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+  /api/private/user/me:
+    get:
+      tags:
+        - User
+      summary: Get the currently authenticated user's details
+      description: Retrieve details of the authenticated user, excluding the access token.
+      responses:
+        '200':
+          description: User details retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User details retrieved successfully
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: Unique user ID.
+                        example: cm6c6pwmr0000rx3rbtzyohvx
+                      email:
+                        type: string
+                        format: email
+                        example: user@example.com
+                      name:
+                        type: string
+                        example: John Doe
+                      image:
+                        type: string
+                        nullable: true
+                        example: null
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: 2025-01-25T12:46:24.627Z
+
+  /api/private/user/signout:
+    get:
+      tags:
+        - User
+      summary: User signout
+      description: Sign out the currently authenticated user.
+      responses:
+        '200':
+          description: User signed out successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Sign out successfully
+
+  /api/private/user/chats:
+    get:
+      tags:
+        - User
+      summary: Retrieve user chats
+      description: Get a list of chats associated with the authenticated user.
+      responses:
+        '200':
+          description: User chats retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User chats retrieved successfully
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Chat ID.
+                          example: cm6cbvzyt0001rxkcxbrg4l6q
+                        name:
+                          type: string
+                          description: Chat name.
+                          example: Roadmap to Becoming a Software Engineer
+                        createdAt:
+                          type: string
+                          format: date-time
+                          description: When the chat was created.
+                          example: 2025-01-25T15:11:06.966Z

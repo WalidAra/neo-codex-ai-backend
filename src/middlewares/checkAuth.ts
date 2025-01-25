@@ -1,24 +1,15 @@
-import {
-  ConstraintError,
-  AuthorizationDTO,
-  RequestWithAuth,
-} from "@/core/app/base";
+import { RequestWithAuth } from "@/core/app/base";
+import { TryCatchBlock } from "@/core/app/base/trycatchblock";
 import { verifyAuthorization } from "@/scripts";
-import { Request, Response, NextFunction, RequestHandler } from "express";
+import { Request, Response, NextFunction } from "express";
 
-const checkAuth = (async (req: Request, res: Response, next: NextFunction) => {
-  try {
+const checkAuth = TryCatchBlock(
+  async (req: Request, _res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
     const authObj = await verifyAuthorization({ authHeader });
     (req as RequestWithAuth).auth = authObj;
     next();
-  } catch (e: unknown) {
-    if (e instanceof ConstraintError) {
-      return res.status(e.status).json({ message: e.message });
-    }
-
-    return res.status(500).json({ message: "Internal server error" });
   }
-}) as RequestHandler;
+);
 
 export default checkAuth;

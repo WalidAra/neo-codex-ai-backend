@@ -16,8 +16,8 @@ const envConfig = {
 
   // redisUrl: process.env.REDIS_URL,
 
-  // geminiApiKey: process.env.GEMINI_KEY,
-  // openaiKey: process.env.OPENAI_KEY,
+  geminiApiKey: process.env.GEMINI_KEY,
+  openaiKey: process.env.OPENAI_KEY,
   authBearer: process.env.AUTH_BEARER as string,
   refreshName: process.env.REFRESH_NAME as string,
 };

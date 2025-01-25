@@ -16,9 +16,31 @@ model User {
   provider Provider
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  chats    Chat[]
 }
 
 enum Provider {
   EMAIL
   GOOGLE
+}
+
+model Chat {
+  id        String   @id @default(cuid())
+  name      String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  answers     Answer[]
+  user      User     @relation(fields: [userId], references: [id] , onDelete: Cascade)
+}
+
+model Answer {
+  id        String   @id @default(cuid())
+  prompt    String
+  answer    String
+  idea      String
+  chatId    String
+  chat      Chat     @relation(fields: [chatId], references: [id] , onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -68,17 +68,6 @@ export const AuthController = {
       data: { ...user, accessToken },
     });
   }),
-  signout: TryCatchBlock(async (_req: Request, res: Response) => {
-    const refreshName = envConfig.refreshName;
-    res.clearCookie(refreshName, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      path: "/",
-    });
-
-    res.status(200).json({ message: "User signed out successfully" });
-  }),
   googleAuth: TryCatchBlock(async (req: Request, res: Response) => {
     if (req.user) {
       const { accessToken, refreshToken } = req.user as {

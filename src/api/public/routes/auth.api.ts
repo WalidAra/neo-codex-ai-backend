@@ -3,10 +3,9 @@ import { Router } from "express";
 import { googleAuthScope, googleAuthSession } from "@/middlewares";
 const router = Router();
 
-const { refresh, signin, signup, signout, googleAuth } = AuthController;
+const { refresh, signin, signup, googleAuth } = AuthController;
 router.post("/signup", signup);
 router.post("/signin", signin);
-router.post("/signout", signout);
 router.get("/refresh", refresh);
 router.get("/google", googleAuthScope);
 router.get("/google/callback", googleAuthSession, googleAuth);

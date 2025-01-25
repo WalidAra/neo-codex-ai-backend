@@ -1,6 +1,7 @@
 import { envConfig } from "@/config";
 import { RequestWithAuth } from "@/core/app/base";
 import { TryCatchBlock } from "@/core/app/base/trycatchblock";
+import { ConversationService } from "@/core/app/services";
 import { Request, Response } from "express";
 
 export const UserController = {
@@ -20,6 +21,15 @@ export const UserController = {
     });
     res.status(200).json({
       message: "User signed out successfully",
+    });
+  }),
+
+  getChats: TryCatchBlock(async (req: Request, res: Response) => {
+    const { user } = (req as RequestWithAuth).auth;
+    const data = await ConversationService.getUserChats(user.id);
+    res.status(200).json({
+      message: "User chats retrieved successfully",
+      data,
     });
   }),
 };
