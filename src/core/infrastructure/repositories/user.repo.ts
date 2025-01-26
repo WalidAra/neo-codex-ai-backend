@@ -30,4 +30,25 @@ export const userRepo = {
     });
     return new User(data);
   },
+  updateUserProfile: async (
+    id: string,
+    updateData: Partial<Omit<UserType, "id" | "createdAt" | "updatedAt">>
+  ) => {
+    const data = await prisma.user.update({
+      where: {
+        id,
+      },
+      data: updateData,
+    });
+    return new User(data);
+  },
+
+  deleteUser: async (id: string) => {
+    await prisma.user.delete({
+      where: {
+        id,
+      },
+    });
+    return true;
+  },
 };
