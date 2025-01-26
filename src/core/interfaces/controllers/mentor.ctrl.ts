@@ -20,7 +20,6 @@ export const MentorController = {
   }),
   get: TryCatchBlock(async (req: Request, res: Response) => {
     const { id } = req.params;
-
     const data = await ConversationService.getConversation(id);
 
     res.status(200).json({
@@ -40,6 +39,26 @@ export const MentorController = {
     res.status(200).json({
       message: "Conversation processed successfully",
       data,
+    });
+  }),
+
+  updateConversation: TryCatchBlock(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { name } = req.body;
+
+    const data = await ConversationService.updateChatName(name, id);
+    res.status(200).json({
+      message: "Conversation processed successfully",
+      data,
+    });
+  }),
+
+  deleteConversation: TryCatchBlock(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    await ConversationService.deleteChat(id);
+
+    res.status(200).json({
+      message: "Conversation processed successfully",
     });
   }),
 };

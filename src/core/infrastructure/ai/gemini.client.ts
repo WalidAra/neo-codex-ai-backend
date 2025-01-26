@@ -22,8 +22,6 @@ const geminiClient = {
       throw new ConstraintError("Interval server error", 500);
     }
 
-    
-
     return jsonData;
   },
 
@@ -35,7 +33,20 @@ const geminiClient = {
     prompt: string;
   }) => {
     const result = await geminiHelper.reviewCode(code, prompt);
-    return result.response;
+    const markdownResult = result.response;
+    const jsonString = markdownResult.slice(8, markdownResult.length - 4);
+    const jsonData = JSON.parse(jsonString) as {
+      name: string;
+      response: string;
+      idea: string;
+      explanation: string;
+    } | null;
+
+    if (!jsonData) {
+      throw new ConstraintError("Interval server error", 500);
+    }
+
+    return jsonData;
   },
 };
 export default geminiClient;

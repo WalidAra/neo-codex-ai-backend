@@ -31,15 +31,20 @@ class GeminiHelper {
       Your task here is to review the following code snippet and do the following:
       - Identify the programming language of the code.
       - based on the user prompt review,debug,modify or fix the code snippet .
-
-      return the response in markdown format contains only the updated code block
+      - Provide your answer in **JSON format**, adhering to the following structure:
+        {
+           "name": "<A suitable name for this conversation>",
+           "response":<"Markdown contains only the updated code block">,
+           "explanation": "<Detailed explanation in Markdown>",
+           "idea":"<Resume of explanation>"
+        }
+      - for the "response" field, don't write "\n" use directly the new line character.
       here is the code snippet:
       ${code}
 
       here is the user prompt:
       ${userPrompt}
     `;
-
     const result = await this.model.generateContent(prompt);
     return {
       response: result.response.text(),

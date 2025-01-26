@@ -73,4 +73,34 @@ export const conversationRepo = {
 
     return data;
   },
+
+  updateChatName: async (name: string, chatId: string) => {
+    const data = await prisma.chat.update({
+      where: {
+        id: chatId,
+      },
+
+      data: {
+        name,
+      },
+
+      include: {
+        answers: {
+          select: answerSelection,
+        },
+      },
+    });
+
+    return data ? new Conversation(data) : null;
+  },
+
+  deleteChat: async (chatId: string) => {
+    await prisma.chat.delete({
+      where: {
+        id: chatId,
+      },
+    });
+
+    return true;
+  },
 };

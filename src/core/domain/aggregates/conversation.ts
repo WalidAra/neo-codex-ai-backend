@@ -17,7 +17,7 @@ export class Conversation implements Entity {
       name: this.conversation.name,
       id: this.conversation.id,
       createdAt: this.conversation.createdAt,
-      answers: this.conversation.answers
+      answers: this.conversation.answers,
     };
   };
 }

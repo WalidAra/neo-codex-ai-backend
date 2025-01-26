@@ -110,4 +110,23 @@ export const ConversationService = {
     const data = await conversationRepo.getAllUserConversations(userId);
     return data;
   },
+
+  updateChatName: async (name: string, id: string) => {
+    if (!name) {
+      throw new ConstraintError("What is the name of the  chat");
+    }
+
+    const data = await conversationRepo.updateChatName(name, id);
+
+    if (!data) {
+      throw new ConstraintError("Chat not found", 404);
+    }
+
+    return data.getData();
+  },
+
+  deleteChat: async (id: string) => {
+    const result = await conversationRepo.deleteChat(id);
+    return result;
+  },
 };
