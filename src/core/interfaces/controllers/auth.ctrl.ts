@@ -8,7 +8,7 @@ const { login, refreshToken, register } = AuthService;
 
 export const AuthController = {
   refresh: TryCatchBlock(async (req: Request, res: Response) => {
-    const token = req.cookies.refreshToken as string | undefined;
+    const token = req.cookies[envConfig.refreshName] as string | undefined;
     const accessToken = await refreshToken(token);
     res.status(201).json({
       message: "Token refreshed successfully",
@@ -28,7 +28,7 @@ export const AuthController = {
       recall,
     });
 
-    res.cookie("refreshToken", refreshToken, {
+    res.cookie(envConfig.refreshName, refreshToken, {
       httpOnly: true,
       secure: true,
       sameSite: "strict",
@@ -55,7 +55,7 @@ export const AuthController = {
       recall,
     });
 
-    res.cookie("refreshToken", refreshToken, {
+    res.cookie(envConfig.refreshName, refreshToken, {
       httpOnly: true,
       secure: true,
       sameSite: "strict",

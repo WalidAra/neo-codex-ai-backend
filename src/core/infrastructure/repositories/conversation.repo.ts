@@ -14,6 +14,8 @@ export const conversationRepo = {
         name: true,
         createdAt: true,
       },
+
+      take: 10,
     });
 
     return data;
