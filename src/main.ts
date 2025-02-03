@@ -18,8 +18,8 @@ const app: Express = express();
 app.use(
   cors({
     credentials: true,
-    origin: "*",
-  })
+    origin: ["http://localhost:5173", envConfig.googleJavascriptOrigins],
+  }),
 );
 
 app.use(express.json());

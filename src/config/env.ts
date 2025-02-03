@@ -12,7 +12,7 @@ const envConfig = {
   googleCallbackUrl: process.env.GOOGLE_REDIRECT_URIS,
   googleAuthUri: process.env.GOOGLE_AUTH_URI,
   googleTokenUri: process.env.GOOGLE_TOKEN_URI,
-  googleJavascriptOrigins: process.env.GOOGLE_JAVASCRIPT_ORIGINS,
+  googleJavascriptOrigins: process.env.GOOGLE_JAVASCRIPT_ORIGINS as string,
 
   // redisUrl: process.env.REDIS_URL,
 

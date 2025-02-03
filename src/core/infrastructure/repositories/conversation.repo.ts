@@ -16,6 +16,9 @@ export const conversationRepo = {
       },
 
       take: 10,
+      orderBy: {
+        name: "desc",
+      },
     });
 
     return data;
