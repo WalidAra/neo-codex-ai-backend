@@ -19,7 +19,7 @@ const envConfig = {
   geminiApiKey: process.env.GEMINI_KEY,
   openaiKey: process.env.OPENAI_KEY,
   authBearer: process.env.AUTH_BEARER as string,
-  refreshName: process.env.REFRESH_NAME as string,
+  refreshName: process.env.BEARER as string,
 };
 
 export default envConfig;
