@@ -2,6 +2,7 @@ import { envConfig } from "@/config";
 import { ConstraintError } from "@/core/app/base";
 import { userRepo } from "@/core/infrastructure/repositories";
 import { JwtHelper } from "@/helpers";
+import { TokenExpiredError } from "jsonwebtoken";
 
 export const verifyAuthorization = async ({
   authHeader,
@@ -37,7 +38,11 @@ export const verifyAuthorization = async ({
     }
 
     return { user: user.getData(), decoded };
-  } catch (err: any) {
-    throw new ConstraintError(err.message || "Invalid token");
+  } catch (err: unknown) {
+    if (err instanceof TokenExpiredError) {
+      throw new ConstraintError("Token expired", 403);
+    } else if (err instanceof Error) {
+      throw new ConstraintError(err.message || "Invalid token");
+    }
   }
 };

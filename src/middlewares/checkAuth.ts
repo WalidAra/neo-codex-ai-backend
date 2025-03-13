@@ -8,8 +8,10 @@ const checkAuth = TryCatchBlock(
   async (req: Request, _res: Response, next: NextFunction) => {
     const authHeader = req.headers[envConfig.refreshName] as string | undefined;
     const authObj = await verifyAuthorization({ authHeader });
-    (req as RequestWithAuth).auth = authObj;
-    next();
+    if (authObj) {
+      (req as RequestWithAuth).auth = authObj;
+      next();
+    }
   }
 );
 
